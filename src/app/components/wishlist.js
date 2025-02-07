@@ -7,11 +7,12 @@ const Wishlist = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch products
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://hackathon-apis.vercel.app/api/products");
+      const response = await fetch(
+        "https://hackathon-apis.vercel.app/api/products"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch products");
       }
@@ -67,10 +68,47 @@ const Wishlist = () => {
           ))}
         </div>
       ) : (
+        // <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        //   {products.map((product) => (
+        //     <div
+        //       key={product.id}
+        //       className="bg-white shadow-md rounded-lg overflow-hidden border"
+        //     >
+        //       <img
+        //         src={product.image || "https://via.placeholder.com/150"}
+        //         alt={product.name || "Placeholder"}
+        //         className="w-full h-48 object-cover"
+        //       />
+        //       <div className="p-4">
+        //         <h3 className="text-lg font-semibold">{product.name}</h3>
+        //         <p className="text-gray-600">${product.price.toFixed(2)}</p>
+        //         <button
+        //           aria-label={
+        //             wishlist.some((item) => item._id === product._id)
+        //               ? `Remove ${product.name} from Wishlist`
+        //               : `Add ${product.name} to Wishlist`
+        //           }
+        //           aria-pressed={wishlist.some((item) => item._id === product._id)}
+        //           className={`mt-4 w-full py-2 px-4 rounded-lg text-white font-semibold transition-colors ${
+        //             wishlist.some((item) => item._id === product._id)
+        //               ? "bg-red-500 hover:bg-red-600"
+        //               : "bg-blue-500 hover:bg-blue-600"
+        //           }`}
+        //           onClick={() => toggleWishlist(product)}
+        //         >
+        //           {wishlist.some((item) => item._id === product._id)
+        //             ? "Remove from Wishlist"
+        //             : "Add to Wishlist"}
+        //         </button>
+        //       </div>
+        //     </div>
+        //   ))}
+        // </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {products.map((product, index) => (
             <div
-              key={product.id}
+              key={product.id || product._id || index} // Use a fallback if product.id is not defined
               className="bg-white shadow-md rounded-lg overflow-hidden border"
             >
               <img
@@ -87,7 +125,9 @@ const Wishlist = () => {
                       ? `Remove ${product.name} from Wishlist`
                       : `Add ${product.name} to Wishlist`
                   }
-                  aria-pressed={wishlist.some((item) => item._id === product._id)}
+                  aria-pressed={wishlist.some(
+                    (item) => item._id === product._id
+                  )}
                   className={`mt-4 w-full py-2 px-4 rounded-lg text-white font-semibold transition-colors ${
                     wishlist.some((item) => item._id === product._id)
                       ? "bg-red-500 hover:bg-red-600"
